@@ -25,6 +25,15 @@ function verify(token) {
     return data;
   } catch { return null; }
 }
+function makeSession(source) {
+  const payload = Buffer.from(JSON.stringify({
+    memberId: source.memberId,
+    role: 'admin',
+    purpose: 'account-session',
+    exp: Date.now() + 4 * 60 * 60 * 1000
+  })).toString('base64').replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/g,'');
+  return payload + '.' + sign(payload, process.env.ACCOUNT_BRIDGE_KEY);
+}
 function cookieToken(req) {
   const raw = String(req.headers.cookie || '').split(';').map(x=>x.trim())
     .find(x=>x.startsWith(COOKIE + '='));
@@ -36,7 +45,8 @@ export default function handler(req, res) {
     const token = String(req.body?.token || '');
     const session = verify(token);
     if (!session) return res.status(403).send('Admin permission required');
-    res.setHeader('Set-Cookie', COOKIE + '=' + encodeURIComponent(token) + '; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=14400');
+    const accountSession = makeSession(session);
+    res.setHeader('Set-Cookie', COOKIE + '=' + encodeURIComponent(accountSession) + '; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=14400');
     res.statusCode = 303;
     res.setHeader('Location', '/');
     return res.end();
