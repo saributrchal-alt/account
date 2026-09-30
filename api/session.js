@@ -12,7 +12,7 @@ function sign(value, secret) {
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
 }
 function verify(token) {
-  const secret = process.env.SESSION_SECRET;
+  const secret = process.env.ACCOUNT_BRIDGE_KEY;
   if (!secret || !token) return null;
   const parts = token.split('.');
   if (parts.length !== 2) return null;
