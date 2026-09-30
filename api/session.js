@@ -28,6 +28,7 @@ function verify(token) {
 function makeSession(source) {
   const payload = Buffer.from(JSON.stringify({
     memberId: source.memberId,
+    adminName: source.adminName || null,
     role: 'admin',
     purpose: 'account-session',
     exp: Date.now() + 4 * 60 * 60 * 1000
@@ -54,7 +55,7 @@ export default function handler(req, res) {
   if (req.method === 'GET') {
     const session = verify(cookieToken(req));
     if (!session) return res.status(403).json({ success:false });
-    return res.status(200).json({ success:true, admin:{ memberId:session.memberId, role:session.role } });
+    return res.status(200).json({ success:true, admin:{ memberId:session.memberId, name:session.adminName || null, role:session.role } });
   }
   return res.status(405).json({ success:false });
 }
