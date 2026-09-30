@@ -4,3 +4,5 @@
 @media(max-width:800px){.four{grid-template-columns:1fr 1fr}.split{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.billrow{grid-template-columns:1fr}.amount{text-align:left}.amount button{width:max-content}}
 
 .uploadActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.uploadActions button{padding:12px;background:#e7eee9;color:#315744;font-weight:700}.fileChosen{margin:10px 0;padding:9px;border-radius:8px;background:#e4f2e9;color:#2d6c49;font-weight:700;word-break:break-all}@media(max-width:520px){.uploadActions{grid-template-columns:1fr}}
+
+.billButtons{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}.billButtons button{margin-top:6px;padding:7px 10px;background:#315744;color:#fff}@media(max-width:800px){.billButtons{justify-content:flex-start}}
